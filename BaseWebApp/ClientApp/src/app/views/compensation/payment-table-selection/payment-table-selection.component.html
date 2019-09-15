@@ -1,0 +1,26 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Selección Tabla de Pagos</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Fecha" placeholder="Fecha" type="date" [group]="detailForm" id="startDate"></div>
+            <div class="row" app-base-input label="Tabla de Pago" [options]="paymentTableList" type="dropdown" placeholder="Tabla de Pago" [group]="detailForm" id="paymentTable"></div>
+            <div class="row" app-base-input label="Permanente" type="switch" [group]="detailForm" id="fixed"></div>
+            <div class="row" app-base-input label="Fecha Fin" placeholder="Fecha Fin" type="date" [group]="detailForm" id="finalDate"></div>
+            <div class="row" app-base-input label="Adicional" type="switch" [group]="detailForm" id="aditional"></div>
+            <div class="row" app-base-input label="Factor de Ajuste" type="decimal" placeholder="Factor de Ajuste" [group]="detailForm" id="adjustmentFactor"></div>
+            <div class="row" app-base-input label="Indicador" [options]="indicatorList" type="dropdown" placeholder="Indicador" [group]="detailForm" id="indicator"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>

@@ -1,0 +1,50 @@
+<div *ngIf="logs; else loading; let data">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Incidencias </div>
+          <div class="card-body">
+            <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+              <div class="row">
+                <div app-base-input class="col-sm-2" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="searchForm" id="startDate"></div>
+                <div app-base-input class="col-sm-2" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="searchForm" id="endDate"></div>
+                <div app-base-input class="col-sm-3" colCss="" label="Indicador" [options]="indicatorList" type="dropdown" placeholder="Indicador" [group]="searchForm" id="indicator"></div>
+                <div app-base-input class="col-sm-3" colCss="" label="Estado" [options]="statusList" type="dropdown" placeholder="Estado" [group]="searchForm" id="status"></div>
+                <div class="col-sm-2">
+                  <label>&nbsp;</label>
+                  <div class="input-group">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Buscar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <ngx-datatable
+              class="material"
+              [rows]="data"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Indicador" prop="indicator"></ngx-datatable-column>
+              <ngx-datatable-column name="Jerarquía" prop="hierarchy"></ngx-datatable-column>
+              <ngx-datatable-column name="Fecha Validación" prop="validationDate"></ngx-datatable-column>
+              <ngx-datatable-column name="Resultado" prop="result"></ngx-datatable-column>
+              <ngx-datatable-column name="Semáforo" maxWidth="100" prop="semaphore">
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <i class="fa fa-lightbulb-o" [style.color]="value"></i>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Fecha Generación" prop="generationDate"></ngx-datatable-column>
+              <ngx-datatable-column name="Resolución" prop="resolution"></ngx-datatable-column>
+              <ngx-datatable-column name="Estado" prop="status"></ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

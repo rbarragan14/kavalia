@@ -1,0 +1,26 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <strong>Fórmula de Distribución</strong>
+        </div>
+        <div class="card-body">
+          <div [formGroup]="detailForm">
+            <div class="row" app-base-input label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></div>
+            <div class="row" app-base-input label="Descripción" placeholder="Descripción" [group]="detailForm" id="description"></div>
+          </div>
+          <app-formula-definition></app-formula-definition>
+        </div>
+        <div class="card-footer">
+          <button type="button" (click)=onSubmit() class="btn btn-sm btn-primary">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+            <i class="fa fa-sign-out"></i> Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

@@ -1,0 +1,77 @@
+<div class="form-group {{colCss}}" [formGroup]="group">
+  <label
+    *ngIf="type !== 'prepend'"
+    [for]="id"
+    class="control-label required">{{label}}</label>
+  <input
+    *ngIf="type === 'textbox' || type === 'password' || type === 'number' || type === 'decimal'"
+    [type]="inputType()"
+    [id]="id"
+    class="form-control"
+    [ngClass]="displayFieldCss(id)"
+    [attr.step]="showStep()"
+    [formControlName]="id"
+    [placeholder]="placeholder">
+  <textarea
+    *ngIf="type === 'textarea'"
+    class="form-control"
+    [id]="id"
+    rows="3"
+    [ngClass]="displayFieldCss(id)"
+    [formControlName]="id"
+    [placeholder]="placeholder"></textarea>
+  <select
+    *ngIf="type === 'dropdown'"
+    (change)="onChange($event.target)"
+    class="form-control"
+    [id]="id"
+    [ngClass]="displayFieldCss(id)"
+    [formControlName]="id">
+    <option *ngIf="placeholder" [value]="null" selected hidden disabled="disabled"> -- {{placeholder}} -- </option>
+    <option *ngFor="let opt of options" [value]="opt.key">{{opt.value}}</option>
+  </select>
+  <angular2-multiselect
+    *ngIf="type === 'multiselect'"
+    [data]="multioptions"
+    [settings]="selectSettings()"
+    [formControlName]="id">
+  </angular2-multiselect>
+  <p-fileUpload
+    *ngIf="type === 'file'"
+    chooseLabel="Seleccionar"
+    cancelLabel="Cancelar"
+    name="myfile[]"
+    [showUploadButton]="false"
+    url="./upload.php">
+  </p-fileUpload>
+  <p-calendar
+    *ngIf="type === 'date'"
+    styleClass="input-group"
+    inputStyleClass="form-control"
+    [placeholder]="placeholder"
+    [locale]="es"
+    [formControlName]="id">
+  </p-calendar>
+  <p-calendar
+    *ngIf="type === 'time'"
+    styleClass="input-group"
+    inputStyleClass="form-control"
+    [locale]="es"
+    [placeholder]="placeholder"
+    [timeOnly]="true"
+    [formControlName]="id">
+  </p-calendar>
+  <br *ngIf="type === 'switch'" />
+  <label *ngIf="type === 'switch'" class="input-group switch switch-label switch-pill switch-primary">
+    <input type="checkbox" (change)="onChange($event.target)" class="switch-input" [formControlName]="id" checked>
+    <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+  </label>
+  <div *ngIf="type === 'prepend'" class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="{{icon}}"></i></span>
+    </div>
+    <input type="text" [id]="id" [formControlName]="id" class="form-control" [placeholder]="placeholder">
+  </div>
+  <app-field-error-display [displayError]="!isFieldValid(id)" [errorMsg]="errorMessage(id)">
+  </app-field-error-display>
+</div>

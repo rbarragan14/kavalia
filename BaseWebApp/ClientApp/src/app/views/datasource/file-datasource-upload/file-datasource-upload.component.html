@@ -1,0 +1,132 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Archivos Carga/Descarga</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Archivo" type="file" placeholder="Archivo" [group]="detailForm" id="file"></div>
+            <div class="row" app-base-input label="Formato" type="dropdown" (valueChange)="onChangeFormat($event)"
+              [options]="formats" placeholder="Formato" [group]="detailForm" id="fileFormat"></div>
+            <div class="row" app-base-input label="Tipo Archivo" type="dropdown" [options]="fileTypes" placeholder="Tipo Archivo"
+              [group]="detailForm" id="fileType"></div>
+            <div class="card">
+              <div class="card-body">
+                <div class="row" app-base-input label="Nombre Formato" placeholder="Nombre Formato" [group]="detailForm"
+                  id="name"></div>
+                <p-table [value]="format">
+                  <ng-template pTemplate="header">
+                    <tr>
+                      <th>Dato</th>
+                      <th ngClass="chk-isdate">Fecha</th>
+                      <th ngClass="btn-hierarchy">Jerarquia</th>
+                      <th>Posición</th>
+                      <th ngClass="btn-delete"></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                    <tr>
+                      <td pEditableColumn>
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="rowData.name">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{rowData.name}}
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td style="text-align: center; vertical-align: middle" pEditableColumn>
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <p-checkbox [ngModelOptions]="{standalone: true}" [(ngModel)]="rowData.isDate" binary="true"></p-checkbox>
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            <p-checkbox [hidden]="!rowData.isDate" [ngModelOptions]="{standalone: true}" [(ngModel)]="rowData.isDate"
+                              binary="true"></p-checkbox>
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td pEditableColumn>
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <button pButton type="button" class="ui-button-raised ui-button-secondary" icon="fa fa-sitemap"
+                              (click)="onHierarcySelect(rowIndex)"></button>
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            <button pButton [hidden]="!rowData.hierarchyStructureNodeId" type="button" class="ui-button-raised ui-button-secondary"
+                              icon="fa fa-sitemap" (click)="onHierarcySelect(rowIndex)"></button>
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td [ngClass]="!rowData.position ? 'invalidrowdata' : null" pEditableColumn>
+                        <p-cellEditor>
+                          <ng-template pTemplate="input">
+                            <input type="number" min="1" max="100" [ngModelOptions]="{standalone: true}" [(ngModel)]="rowData.position">
+                          </ng-template>
+                          <ng-template pTemplate="output">
+                            {{rowData.position}}
+                            <div *ngIf="!rowData.position" class="invalid-feedback d-block"> Este es un campo requerido </div>
+                          </ng-template>
+                        </p-cellEditor>
+                      </td>
+                      <td ngClass="btn-delete">
+                        <app-button-delete-ng label='' class="ui-button-danger" icon="pi pi-trash" (confirm)="deleteSelecteRow(rowIndex)"></app-button-delete-ng>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+                <div class="card-footer">
+                  <button type="button" (click)="addData()" class="btn btn-sm btn-primary">
+                    <i class="icon-plus"></i> Adicionar Dato</button>
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-sm btn-primary">
+                  <i class="fa fa-save"></i> Guadar Definición</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="button" (click)=onUpload() class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Cargar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+<div bsModal #hierarchySelectModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Jerarquía</h4>
+        <button type="button" class="close" (click)="hierarchySelectModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="row" app-base-input label="Jerarquia" (valueChange)="onChangeHierarchy($event)" type="dropdown"
+              [options]="hierarchyStructureList" placeholder="Jerarquia" [group]="hierarchyForm" id="hierarchy"></div>
+            <app-hierarchy-tree [(selectedNode)]="selectedNode" [showToolbar]="false" [nodes]="activeNodes"></app-hierarchy-tree>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-info" (click)="onSelectHierarchy(hierarchyForm)">
+          <i class="fa fa-save"></i> Seleccionar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

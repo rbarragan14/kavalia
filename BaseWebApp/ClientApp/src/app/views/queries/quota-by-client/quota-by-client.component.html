@@ -1,0 +1,39 @@
+<div *ngIf="logs; else loading; let data">
+    <div class="animated fadeIn">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i> Consulta cuota por cliente </div>
+            <div class="card-body">
+              <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+                <app-period-selector></app-period-selector>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <label>&nbsp;</label>
+                    <div class="input-group">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Buscar</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <ngx-datatable
+                class="material"
+                [rows]="data"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [rowHeight]="'auto'"
+                [limit]="10">
+                <ngx-datatable-column name="" prop="variable"></ngx-datatable-column>
+                <ngx-datatable-column name="Grupo 1" prop="value1"></ngx-datatable-column>
+                <ngx-datatable-column name="Grupo 2" prop="value2"></ngx-datatable-column>
+                <ngx-datatable-column name="Total" prop="total"></ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #loading>Loading Data...</ng-template>

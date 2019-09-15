@@ -1,0 +1,53 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> Consulta Tendencia </div>
+          <div class="card-body">
+            <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+              <div class="row">
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="searchForm" id="startDate"></div>
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="searchForm" id="endDate"></div>
+                <div app-base-input class="col-sm-4" label="Posición" [multioptions]="positionElements" placeholder="Posición" type="multiselect" [group]="searchForm" id="positions"></div>
+              </div>
+              <div class="row">
+                <div class="col-sm-4">
+                  <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Buscar</button>
+                </div>
+              </div>
+              <br />
+            </form>
+            <div *ngIf="show" class="row">
+              <div class="col-md-6">
+                  <ngx-datatable
+                  class="material"
+                  [rows]="logs"
+                  [columnMode]="'force'"
+                  [headerHeight]="50"
+                  [footerHeight]="50"
+                  [rowHeight]="'auto'"
+                  [limit]="10">
+                  <ngx-datatable-column name="Posición" prop="position"></ngx-datatable-column>
+                  <ngx-datatable-column name="Periodo" prop="period"></ngx-datatable-column>
+                  <ngx-datatable-column name="Indicador" prop="indicator"></ngx-datatable-column>
+                  <ngx-datatable-column name="Total pagado" prop="valuePaid"></ngx-datatable-column>
+                  <ngx-datatable-column name="Resultado indicador" prop="totalValue"></ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+              <div class="col-md-6">
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart"
+                  [datasets]="lineChartData"
+                  [labels]="lineChartLabels"
+                  [options]="lineChartOptions"
+                  [colors]="lineChartColours"
+                  [legend]="lineChartLegend"
+                  [chartType]="lineChartType"></canvas>
+                </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

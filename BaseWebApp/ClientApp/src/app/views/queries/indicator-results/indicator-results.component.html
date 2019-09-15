@@ -1,0 +1,63 @@
+<div *ngIf="logs; else loading; let data">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Resultado Indicadores </div>
+          <div class="card-body">
+            <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+              <div class="row">
+                <div app-base-input class="col-sm-2" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="searchForm"
+                  id="startDate"></div>
+                <div app-base-input class="col-sm-2" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="searchForm"
+                  id="endDate"></div>
+                <div app-base-input class="col-sm-3" colCss="" label="Indicador" [options]="indicatorList" type="dropdown" placeholder="Indicador"
+                  [group]="searchForm" id="indicator"></div>
+                <div app-base-input class="col-sm-3" label="Umbrales" type="switch" [group]="searchForm" id="thresold"></div>
+                <div class="col-sm-2">
+                  <label>&nbsp;</label>
+                  <div class="input-group">
+                    <button class="btn btn-primary" type="submit">
+                      <i class="fa fa-search"></i> Buscar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <div *ngIf="show" class="row">
+              <div class="col-md-6">
+                <ngx-datatable *ngIf="thresoldQuery" class="material" [rows]="data" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                  [rowHeight]="'auto'" [limit]="10">
+                  <ngx-datatable-column name="Indicador" prop="indicator"></ngx-datatable-column>
+                  <ngx-datatable-column name="Jerarquía" prop="hierarchy"></ngx-datatable-column>
+                  <ngx-datatable-column name="Fecha" prop="validationDate"></ngx-datatable-column>
+                  <ngx-datatable-column name="Umbral Mínimo" prop="thresoldMin"></ngx-datatable-column>
+                  <ngx-datatable-column name="Umbral Máximo" prop="thresoldMax"></ngx-datatable-column>
+                  <ngx-datatable-column name="Resultado" prop="result"></ngx-datatable-column>
+                  <ngx-datatable-column name="Semáforo" maxWidth="100" prop="semaphore">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <i class="fa fa-lightbulb-o" [style.color]="value"></i>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </ngx-datatable>
+                <ngx-datatable *ngIf="!thresoldQuery" class="material" [rows]="data" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                  [rowHeight]="'auto'" [limit]="10">
+                  <ngx-datatable-column name="Fecha" prop="validationDate"></ngx-datatable-column>
+                  <ngx-datatable-column name="Indicador" prop="indicator"></ngx-datatable-column>
+                  <ngx-datatable-column name="Resultado" prop="result"></ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+              <div class="col-md-6">
+                <div class="chart-wrapper">
+                  <canvas baseChart class="chart" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColours"
+                    [legend]="lineChartLegend" [chartType]="lineChartType"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="form-group {{rowCss}}">
+    <label class="control-label required">{{label}}</label>
+    <div class="weekDays-selector">
+        <ng-template ngFor let-item [ngForOf]="dayControls" let-i="index">
+            <input type="checkbox" id="weekday-{{i}}" (change)="onTouched();change($event, i)" [checked]="days[i]" class="weekday" />
+            <label for="weekday-{{i}}">{{item}}</label>
+        </ng-template>
+    </div>
+  </div>
+</div>

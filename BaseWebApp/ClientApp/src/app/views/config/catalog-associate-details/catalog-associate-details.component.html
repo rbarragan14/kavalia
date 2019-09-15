@@ -1,0 +1,63 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Asociación Catálogos</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row"
+              app-base-input
+              (valueChange)="onChangeParent($event)"
+              label="Catálogo Padre"
+              type="dropdown"
+              [options]="catalogs"
+              placeholder="Catálogo Padre"
+              [group]="detailForm"
+              id="parentCatalogId"></div>
+            <div class="row" app-base-input label="Elemento Padre" type="dropdown" [options]="parentItems" placeholder="Elemento Padre" [group]="detailForm" id="parentCatalogItemId"></div>
+            <div class="row"
+              app-base-input
+              (valueChange)="onChangeChild($event)"
+              label="Catálogo Hijo"
+              type="dropdown"
+              [options]="catalogs"
+              placeholder="Catálogo Hijo"
+              [group]="detailForm"
+              id="childCatalogId"></div>
+            <div class="form-group">
+              <ngx-datatable
+              style="width: 100%"
+              class="material"
+              [rows]="childItems"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="5"
+              [selected]="selectedChildItems"
+              [selectionType]="'checkbox'"
+              [selectAllRowsOnPage]="false">
+              <ngx-datatable-column
+                [width]="30"
+                [sortable]="false"
+                [canAutoResize]="false"
+                [draggable]="false"
+                [resizeable]="false"
+                [headerCheckboxable]="false"
+                [checkboxable]="true">
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Elementos" prop="name"></ngx-datatable-column>
+            </ngx-datatable>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>

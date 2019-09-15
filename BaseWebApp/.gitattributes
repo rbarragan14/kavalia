@@ -1,0 +1,2 @@
+config/supervisord.conf text eol=lf
+config/docker-entrypoint.sh text eol=lf

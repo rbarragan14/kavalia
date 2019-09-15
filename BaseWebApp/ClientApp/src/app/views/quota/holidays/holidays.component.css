@@ -1,0 +1,4 @@
+.ui-datepicker.ui-widget .ui-datepicker-calendar td a.ui-state-active {
+    background-color: red;
+    color: #ffffff;
+}

@@ -1,0 +1,47 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Rol</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <app-base-input label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></app-base-input>
+            <app-base-input label="Descripción" placeholder="Descripción" [group]="detailForm" id="description"></app-base-input>
+            <div class="form-group">
+              <ngx-datatable
+              style="width: 100%"
+              class="material"
+              [rows]="allPermissions"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="5"
+              [selected]="selectedPermissions"
+              [selectionType]="'checkbox'"
+              [selectAllRowsOnPage]="false">
+              <ngx-datatable-column
+                [width]="30"
+                [sortable]="false"
+                [canAutoResize]="false"
+                [draggable]="false"
+                [resizeable]="false"
+                [headerCheckboxable]="false"
+                [checkboxable]="true">
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Permiso" prop="name"></ngx-datatable-column>
+            </ngx-datatable>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+            <app-button-delete *ngIf="editingStatus" (confirm)=onDelete()></app-button-delete>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>

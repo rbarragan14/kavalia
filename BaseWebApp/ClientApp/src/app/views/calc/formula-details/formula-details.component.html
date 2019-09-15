@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Fórmula</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(itemForm)" [formGroup]="itemForm">
+          <div class="card-body">
+            <app-base-input label="Nombre" type="textbox" placeholder="Nombre" [group]="itemForm" id="name"></app-base-input>
+            <app-base-input label="Fórmula" type="textarea" placeholder="Fórmula" [group]="itemForm" id="body"></app-base-input>
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" (click)="onClickModal()"><i class="fa fa-plus-square-o"></i> Parámetro</button>
+            <div class="form-group">
+                <ngx-datatable
+                class="material"
+                [rows]="rows"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="0"
+                [rowHeight]="'auto'"
+                [selected]="selected"
+                [selectionType]="'single'"
+                (select)='onSelect()'>
+              <ngx-datatable-column name="Parámetro" prop="name"></ngx-datatable-column>
+              <ngx-datatable-column name="Valor" prop="value"></ngx-datatable-column>
+            </ngx-datatable>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+            <app-button-delete *ngIf="editingStatus" (confirm)=onDelete()></app-button-delete>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Parámetro fórmula</h4>
+        <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitParam(paramForm)" [formGroup]="paramForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-wrench"></i></span>
+                  </div>
+                  <input type="text" id="name" formControlName="name" class="form-control" placeholder="Parámetro">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fa fa-calculator"></i></span>
+                  </div>
+                  <input type="email" id="value" formControlName="value" class="form-control" placeholder="Valor">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModal.hide()"><i class="fa fa-close"></i> Cerrar</button>
+          <app-button-delete (confirm)=onDeleteParam()></app-button-delete>
+        </div>
+    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

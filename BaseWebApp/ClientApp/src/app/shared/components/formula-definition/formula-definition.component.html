@@ -1,0 +1,171 @@
+<div>
+  <tabset>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Variables
+      </ng-template>
+      <app-tree-selection [nodes]="variables"></app-tree-selection>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Indicadores
+      </ng-template>
+      <app-tree-selection [nodes]="indicators"></app-tree-selection>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Dato General
+      </ng-template>
+      <button type="button" class="btn btn-success btn-sm" data-toggle="modal" (click)="onClickModal()">
+        <i class="fa fa-plus-square-o"></i> Dato</button>
+      <div class="form-group">
+        <ngx-datatable class="material" [rows]="rows" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="'auto'"
+          [selected]="selected" [selectionType]="'single'" (select)='onSelect()'>
+          <ngx-datatable-column name="Parámetro" prop="name"></ngx-datatable-column>
+          <ngx-datatable-column name="Valor" prop="value"></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Dato Asociado
+      </ng-template>
+      <button type="button" class="btn btn-success btn-sm" data-toggle="modal" (click)="onClickDatasourceModal()">
+        <i class="fa fa-plus-square-o"></i> Dato</button>
+      <div class="form-group">
+        <ngx-datatable class="material" [rows]="rowsDatasource" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="0" [rowHeight]="'auto'"
+          [selected]="selectedDatasource" [selectionType]="'single'" (select)='onDatasourceSelect()'>
+          <ngx-datatable-column name="Nombre" prop="name"></ngx-datatable-column>
+          <ngx-datatable-column name="Descripción" prop="description"></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Jerarquía
+      </ng-template>
+      <div class="row" app-base-input label="Nombre" [options]="hierarchyList" type="dropdown" placeholder="Nombre" [group]="detailForm"
+        id="hierarchy"></div>
+      <app-hierarchy-tree [showToolbar]="false" [nodes]="hierarchy"></app-hierarchy-tree>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Fórmula
+      </ng-template>
+      <div class="row" app-base-input label="Fórmula" type="textarea" placeholder="Fórmula" [group]="detailForm" id="formula"></div>
+      <div class="row form-group col-sm-12">
+        <button type="button" class="btn btn-success btn-sm" (click)="onSyntaxCheck()">
+          <i class="fa fa-check"></i> Sintaxis</button>
+      </div>
+      <ngx-datatable class="material" [rows]="formulaVariables" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="0"
+        [rowHeight]="'auto'">
+        <ngx-datatable-column name="Variable Fórmula" prop="name"></ngx-datatable-column>
+        <ngx-datatable-column name="Variable" prop="value"></ngx-datatable-column>
+      </ngx-datatable>
+    </tab>
+    <tab>
+      <ng-template tabHeading>
+        <i class="icon-calculator"></i> Fórmula Validación
+      </ng-template>
+      <div class="row" app-base-input label="Fórmula" type="textarea" placeholder="Fórmula" [group]="detailForm" id="formulaValidation"></div>
+      <div class="row form-group col-sm-12">
+        <button type="button" class="btn btn-success btn-sm" (click)="onSyntaxCheck()">
+          <i class="fa fa-check"></i> Sintaxis</button>
+      </div>
+      <ngx-datatable class="material" [rows]="formulaVariables" [columnMode]="'standard'" [headerHeight]="50" [footerHeight]="0"
+        [rowHeight]="'auto'">
+        <ngx-datatable-column name="Variable Fórmula" prop="name"></ngx-datatable-column>
+        <ngx-datatable-column name="Variable" prop="value"></ngx-datatable-column>
+      </ngx-datatable>
+    </tab>
+  </tabset>
+</div>
+<div bsModal #infoModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Dato General</h4>
+        <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitParam(paramForm)" [formGroup]="paramForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-wrench"></i>
+                    </span>
+                  </div>
+                  <input type="text" id="name" formControlName="name" class="form-control" placeholder="Parámetro">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fa fa-calculator"></i>
+                    </span>
+                  </div>
+                  <input type="email" id="value" formControlName="value" class="form-control" placeholder="Valor">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModal.hide()">
+            <i class="fa fa-close"></i> Cerrar</button>
+          <app-button-delete (confirm)=onDeleteParam()></app-button-delete>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalDatasource="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Dato asociado a fuente de datos</h4>
+        <button type="button" class="close" (click)="infoModalDatasource.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitDatasourceParam(paramDatasourceForm)" [formGroup]="paramDatasourceForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Nombre" placeholder="Nombre" [group]="paramDatasourceForm" id="name"></div>
+              <div class="row" app-base-input label="Descripción" placeholder="Descripción" [group]="paramDatasourceForm" id="description"></div>
+              <div class="row">
+                <div class="col-sm-6" colCss="" app-base-input label="Fuente de Datos" [options]="datasourcesList" type="dropdown" placeholder="Fuente de Datos"
+                  [group]="paramDatasourceForm" id="datasource"></div>
+                <div class="col-sm-6" colCss="" app-base-input label="Campo" [options]="fieldsList" type="dropdown" placeholder="Campo" [group]="paramDatasourceForm"
+                  id="field"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModalDatasource.hide()">
+            <i class="fa fa-close"></i> Cerrar</button>
+          <app-button-delete (confirm)=onDeleteDatasourceParam()></app-button-delete>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

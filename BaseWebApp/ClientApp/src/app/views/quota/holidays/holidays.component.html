@@ -1,0 +1,65 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Días no Laborables</strong>
+        </div>
+        <div class="card-body">
+          <div [formGroup]="detailForm" class="row">
+            <div app-base-input class="col-md-9" colCss="" label="Jerarquía" [group]="detailForm" id="hierarchyText"></div>
+            <div class="col-md-3">
+              <label>&nbsp;</label>
+              <div class="input-group">
+                <button class="btn btn-secondary" type="button" (click)="onHierarcySelect()">
+                  <i class="fa fa-sitemap"></i> Jerarquia</button>
+              </div>
+            </div>
+          </div>
+          <p-calendar [monthNavigator]="true" [locale]="es" [yearNavigator]="true" yearRange="2018:2030" [inline]="true" (onSelect)=onSelectDate($event)>
+            <ng-template pTemplate="date" let-date>
+              <span [ngStyle]="{color: isHoliday(date) ? 'red' : 'inherit', 'font-weight': isHoliday(date) ? 'bold' : 'inherit', padding: 0}">{{date.day}}</span>
+            </ng-template>
+          </p-calendar>
+        </div>
+        <div class="card-footer">
+          <button type="button" (click)=onSubmit() class="btn btn-sm btn-primary">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+            <i class="fa fa-sign-out"></i> Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+<div bsModal #hierarchySelectModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Jerarquía</h4>
+        <button type="button" class="close" (click)="hierarchySelectModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="row" app-base-input label="Jerarquia" (valueChange)="onChangeHierarchy($event)" type="dropdown" [options]="hierarchyList"
+              placeholder="Jerarquia" [group]="detailForm" id="hierarchy"></div>
+            <app-hierarchy-tree [showToolbar]="false" [nodes]="activeNodes" [(selectedNode)]="selectedNode"></app-hierarchy-tree>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-info" (click)="onSelectDateHierarchy()">
+          <i class="fa fa-save"></i> Seleccionar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

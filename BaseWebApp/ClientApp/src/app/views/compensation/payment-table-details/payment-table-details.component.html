@@ -1,0 +1,488 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Tabla de Pagos</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row">
+              <div app-base-input class="col-sm-10" colCss="" label="Nombre" placeholder="Nombre" [group]="detailForm"
+                id="name"></div>
+              <div app-base-input class="col-sm-2" colCss="" label="Versión" placeholder="Versión" [group]="detailForm"
+                id="version"></div>
+            </div>
+            <div class="row" app-base-input label="Fecha Inicio" placeholder="Fecha Inicio" type="date" [group]="detailForm"
+              id="startDate"></div>
+            <div class="row" app-base-input label="Fecha Fin" placeholder="Fecha Fin" type="date" [group]="detailForm"
+              id="finalDate"></div>
+            <div class="row col-sm-12">
+              <p-toolbar>
+                <div class="ui-toolbar-group-left">
+                  <button pButton type="button" label="Indicadores" icon="pi pi-plus" class="ui-button-secondary"
+                    (click)="onClickModalIndicator()"></button>
+                  <button pButton type="button" label="Jerarquias" icon="fa fa-sitemap" class="ui-button-secondary"
+                    (click)="onHierarcySelect()"></button>
+                  <button pButton type="button" label="Tabla Definida" icon="fa fa-eye" class="ui-button-secondary"
+                    (click)="onClickModalTable()"></button>
+                </div>
+              </p-toolbar>
+            </div>
+            <div class="form-group">
+              <ngx-datatable style="width: 100%" class="material" [rows]="indicatorRows" [columnMode]="'Standard'"
+                [headerHeight]="50" [footerHeight]="false" [rowHeight]="'auto'">
+                <ngx-datatable-column name="Indicadores" prop="name"></ngx-datatable-column>
+                <ngx-datatable-column name="Datos Pagos" maxWidth="150">
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button (click)="onSelectGoal(row, rowIndex)" class="btn btn-info btn-sm" type="button" *ngIf="rowIndex === 0 || paymentTableType === '1'">Ver</button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Detalle Umbrales" maxWidth="120">
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button (click)="onSelectGoalDetails(row, rowIndex)" class="btn btn-info btn-sm" type="button">Ver</button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Detalle Pago" maxWidth="120">
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button (click)="onSelectPaymentDetails(row, rowIndex)" class="btn btn-info btn-sm" type="button"
+                      *ngIf="rowIndex === 0 || paymentTableType === '1'">Ver</button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>
+
+<div bsModal #infoModalIndicator="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Indicadores</h4>
+        <button type="button" class="close" (click)="infoModalIndicator.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitIndicator(indicatorForm)" [formGroup]="indicatorForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Indicadores" [multioptions]="indicatorListMultiple" type="multiselect"
+                placeholder="Indicadores" [group]="indicatorForm" id="indicator"></div>
+              <div class="row" app-base-input label="Tipo Tabla" [options]="paymentTableTypes" type="dropdown"
+                placeholder="Tipo Tabla" [group]="indicatorForm" id="paymentTableType"></div>
+              <div class="row" app-base-input label="Tipo de Umbral" (valueChange)="onChangeGoalTypeIndicator($event)"
+                [options]="goalType" type="dropdown" placeholder="Tipo de Umbral" [group]="indicatorForm" id="goalTypeIndicator"></div>
+              <div class="row" [hidden]="!showIndicatorPercentage" app-base-input label="Indicador Porcentaje"
+                [options]="indicatorList" type="dropdown" placeholder="Indicador Porcentaje" [group]="indicatorForm" id="indicatorPercentage"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModalIndicator.hide()">
+            <i class="fa fa-close"></i> Cerrar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalGoals="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Configuración Pagos</h4>
+        <button type="button" class="close" (click)="infoModalGoals.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitGoals(goalsForm)" [formGroup]="goalsForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Tipo Pago" (valueChange)="onChangePaymentType($event)" [options]="paymentType"
+                type="dropdown" placeholder="Tipo Pago" [group]="goalsForm" id="paymentTypeId"></div>
+              <div class="row" app-base-input label="Tipo Tope Máximo" (valueChange)="onChangeMaxLimit($event)"
+                [hidden]="!showMaxLimit" [options]="maxLimitTypes" type="dropdown" placeholder="Tipo Tope Máximo"
+                [group]="goalsForm" id="maxLimitTypeId"></div>
+              <div class="row" app-base-input label="Valor Máximo Pago" [hidden]="!showPaymentMaxValue" type="decimal"
+                placeholder="Valor Máximo Pago" [group]="goalsForm" id="paymentMaxValue"></div>
+              <div class="row" app-base-input label="Porcentaje" [hidden]="kindSelected" type="decimal" placeholder="Porcentaje"
+                [group]="goalsForm" id="percentage"></div>
+              <div class="row" app-base-input label="Especie" [hidden]="!kindSelected" [options]="kindType" type="dropdown"
+                placeholder="Especie" [group]="goalsForm" id="goalKindId"></div>
+              <div class="row" app-base-input label="Valor" [hidden]="!kindSelected" type="decimal" placeholder="Valor Especie"
+                [group]="goalsForm" id="kindValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModalGoals.hide()">
+            <i class="fa fa-close"></i> Cerrar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalGoalDetails="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detalle Umbrales</h4>
+        <button type="button" class="close" (click)="infoModalGoalDetails.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitGoalDetails(goalDetailsForm)" [formGroup]="goalDetailsForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" [hidden]="!showIndicatorPercentage" app-base-input label="Porcentaje" type="decimal"
+                placeholder="Porcentaje" [group]="goalDetailsForm" id="percentage"></div>
+              <div class="row" [hidden]="!showSpecificUnits" app-base-input label="# Unidades" type="number"
+                placeholder="# Unidades" [group]="goalDetailsForm" id="unitNumber"></div>
+              <div [hidden]="!showThresold" class="row">
+                <div class="col-sm-6" colCss="" app-base-input label="Valor Inicial Umbral" type="decimal" placeholder="Valor Inicial Umbral"
+                  [group]="goalDetailsForm" id="thresholdLow"></div>
+                <div class="col-sm-6" colCss="" app-base-input label="Valor Final Umbral" type="decimal" placeholder="Valor Final Umbral"
+                  [group]="goalDetailsForm" id="thresholdUp"></div>
+              </div>
+              <div class="row col-sm-12">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                  <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-plus"> Meta</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <p-table [columns]="goalDetailsColumns" [resizableColumns]="true" [value]="goalDetailsRows">
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns">
+                        {{col.name}}
+                      </th>
+                      <th style="width:7em"></th>
+                    </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-row let-columns="columns" let-rowIndex="rowIndex">
+                    <tr>
+                      <td *ngFor="let col of columns">
+                        {{row[col.prop]}}
+                      </td>
+                      <td>
+                        <button (click)=onSelectGoalDetail(row) pButton type="button" icon="pi pi-eye"></button>
+                        <app-button-delete-ng label='' placement="left" (confirm)="onDeleteGoalDetail(rowIndex)"></app-button-delete-ng>
+                      </td>
+                    </tr>
+                  </ng-template>
+                </p-table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+          <button type="button" class="btn btn-sm btn-info" (click)="onCloseGoalDetails()">
+            <i class="fa fa-save"></i> Salvar</button>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalPaymentDetails="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detalle de Pagos</h4>
+        <button type="button" class="close" (click)="infoModalPaymentDetails.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitPaymentDetails(paymentDetailsForm)" [formGroup]="paymentDetailsForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Indicador" disabled="true" placeholder="" [group]="paymentDetailsForm"
+                id="indicator"></div>
+              <div class="row" [hidden]="!fixedValueSelected" app-base-input label="Valor Fijo" type="decimal"
+                placeholder="Valor Fijo" [group]="paymentDetailsForm" id="fixedValue"></div>
+              <div class="row" [hidden]="!percentageValueSelected" app-base-input label="Porcentaje" type="decimal"
+                placeholder="Porcentaje" [group]="paymentDetailsForm" id="percentageUnit"></div>
+              <div class="row col-sm-12">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                  <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fa fa-save"> Guardar</i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <ngx-datatable style="width: 100%" class='material' [rows]='goalDetailsRows' [columnMode]="'standard'"
+                  [headerHeight]="50" (select)='onSelectGoalDetailRow()' [selected]="selectedGoal" [footerHeight]="false"
+                  [selectionType]="'single'" [rowHeight]="'auto'">
+                  <ngx-datatable-column *ngFor="let col of goalDetailsColumns" [name]="col.name" [prop]="col.prop">
+                  </ngx-datatable-column>
+                </ngx-datatable>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalPaymentMatrixDetails="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detalle de Pagos Matricial</h4>
+        <button type="button" class="close" (click)="infoModalPaymentMatrixDetails.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+              <ngx-datatable style="width: 100%" class="material" [rows]="matrix" [columnMode]="'force'" [headerHeight]="50"
+                [footerHeight]="false" [rowHeight]="'auto'" [limit]="5" [rowHeight]="'auto'">
+                <ngx-datatable-column headerClass="matrix-header" cellClass="matrix-header" name="Indicador" prop="I"></ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="0-74" prop="1">
+                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    <span title="Double click to edit" (click)="editing[rowIndex + '-1'] = true" *ngIf="!editing[rowIndex + '-1']">
+                      {{value}}
+                    </span>
+                    <input autofocus (blur)="updateValue($event, '1', rowIndex)" *ngIf="editing[rowIndex+ '-1']" type="text"
+                      [value]="value" />
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="75-79" prop="2">
+                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    <span title="Double click to edit" (click)="editing[rowIndex + '-2'] = true" *ngIf="!editing[rowIndex + '-2']">
+                      {{value}}
+                    </span>
+                    <input autofocus (blur)="updateValue($event, '2', rowIndex)" *ngIf="editing[rowIndex+ '-2']" type="text"
+                      [value]="value" />
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="80-84" prop="3">
+                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    <span title="Double click to edit" (click)="editing[rowIndex + '-3'] = true" *ngIf="!editing[rowIndex + '-3']">
+                      {{value}}
+                    </span>
+                    <input autofocus (blur)="updateValue($event, '3', rowIndex)" *ngIf="editing[rowIndex+ '-3']" type="text"
+                      [value]="value" />
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="84-100" prop="4">
+                  <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+                    <span title="Double click to edit" (click)="editing[rowIndex + '-4'] = true" *ngIf="!editing[rowIndex + '-4']">
+                      {{value}}
+                    </span>
+                    <input autofocus (blur)="updateValue($event, '4', rowIndex)" *ngIf="editing[rowIndex+ '-4']" type="text"
+                      [value]="value" />
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+            <div class="row col-sm-12">
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                  <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-sm btn-warning" (click)="infoModalPaymentMatrixDetails.hide()">
+                      <i class="fa fa-close"></i> Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalPaymentTableIndicator="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tabla de pagos por indicador</h4>
+        <button type="button" class="close" (click)="infoModalPaymentTableIndicator.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+              <p-table [columns]="indicatorTableCols" [value]="indicatorTable">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                  <tr>
+                    <td *ngFor="let col of columns">
+                      {{rowData[col.field]}}
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+            <div class="row col-sm-12">
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                  <button type="button" class="btn btn-sm btn-warning" (click)="infoModalPaymentTableIndicator.hide()">
+                    <i class="fa fa-close"></i> Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #infoModalPaymentTableMatrix="bs-modal" class="modal fade" [config]="{backdrop: 'static'}" tabindex="-1"
+  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tabla de pagos matricial</h4>
+        <button type="button" class="close" (click)="infoModalPaymentTableMatrix.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <div class="form-group">
+              <ngx-datatable style="width: 100%" class="material" [rows]="matrix" [columnMode]="'flex'" [headerHeight]="50"
+                [footerHeight]="false" [rowHeight]="'auto'" [limit]="5" [rowHeight]="'auto'">
+                <ngx-datatable-column headerClass="matrix-header" cellClass="matrix-header" name="Indicador" prop="I"></ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="0-74" prop="1"></ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="75-79" prop="2"></ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="80-84" prop="3"></ngx-datatable-column>
+                <ngx-datatable-column headerClass="matrix-header" name="84-100" prop="4"></ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+            <div class="row col-sm-12">
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                  <button type="button" class="btn btn-sm btn-warning" (click)="infoModalPaymentTableMatrix.hide()">
+                    <i class="fa fa-close"></i> Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div bsModal #hierarchySelectModal="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Jerarquías</h4>
+        <button type="button" class="close" (click)="hierarchySelectModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitHierarchy(hierarchyForm)" [formGroup]="hierarchyForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Jerarquia" (valueChange)="onChangeHierarchy($event)" type="dropdown"
+                [options]="hierarchyStructureList" placeholder="Jerarquia" [group]="hierarchyForm" id="hierarchy"></div>
+              <app-hierarchy-tree [(selectedNode)]="selectedNode" [showToolbar]="false" [nodes]="activeNodes"></app-hierarchy-tree>
+            </div>
+          </div>
+          <div class="row col-sm-12">
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+              <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-plus"> Jerarquía</i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p-table [value]="tableHierarchies">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Jerarquía</th>
+                <th>Nivel</th>
+                <th style="width:5em"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row let-columns="columns" let-rowIndex="rowIndex">
+              <tr>
+                <td>{{row.hierarchyStructure?.name}}</td>
+                <td>{{row.hierarchyStructureNode?.name}}</td>
+                <td>
+                  <!-- <button (click)=onSelectHierarchy(row) pButton type="button" icon="pi pi-eye"></button> -->
+                  <app-button-delete-ng label='' placement="left" (confirm)="onDeleteHierarchy(rowIndex)"></app-button-delete-ng>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-info" (click)="hierarchySelectModal.hide()">
+          <i class="fa fa-save"></i> Salvar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

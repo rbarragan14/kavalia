@@ -1,0 +1,40 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Reglas de negocio</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row">
+              <div app-base-input class="col-sm-10" colCss="" label="Fecha Inicio" placeholder="Fecha Inicio" type="date"
+                [group]="detailForm" id="startDate"></div>
+              <div app-base-input class="col-sm-2" colCss="" label="Versión" placeholder="Versión" [group]="detailForm"
+                id="version"></div>
+            </div>
+            <div class="row" app-base-input label="Tipo Incidencia" [options]="incidentTypeList" type="dropdown"
+              placeholder="Tipo Incidencia" [group]="detailForm" id="incidentTypeId"></div>
+            <div class="row" app-base-input label="Tipo" [options]="type" (valueChange)="onChangeType($event)" type="dropdown" placeholder="Tipo"
+              [group]="detailForm" id="type"></div>
+            <div class="row" [hidden]="typeSelected !== '1'"  app-base-input label="Tabla de Pago" [options]="paymentTables" type="dropdown" placeholder="Tabla de Pago"
+              [group]="detailForm" id="paymentTableId"></div>
+            <div class="row" [hidden]="typeSelected !== '2'" app-base-input label="Porcentaje Salario" type="decimal" placeholder="Porcentaje Salario"
+              [group]="detailForm" id="salaryPercentage"></div>
+            <div class="row" app-base-input label="Elementos Pago Variable" [multioptions]="paymentVariableElements"
+              type="multiselect" placeholder="Elementos Pago Variable" [group]="detailForm" id="paymentVariableElements"></div>
+            <div class="row" app-base-input label="Adicional" type="switch" [group]="detailForm" id="additional"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

@@ -1,0 +1,69 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Fuente de Datos SQL</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div [formGroup]="detailForm" [collapse]="isCollapsed">
+              <div class="row" app-base-input label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></div>
+              <div class="row" app-base-input label="Descripción" placeholder="Descripción" [group]="detailForm" id="description"></div>
+              <app-base-input label="Activo" type="switch" [group]="detailForm" id="activeStatus"></app-base-input>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <i class="fa fa-edit"></i>Sentencia SQL
+                <div class="card-header-actions">
+                  <button type="button" class="btn btn-sm btn-minimize" (click)="toggleCollapse()">
+                    <i class={{iconCollapse}}></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card card-body">
+                <tabset>
+                  <tab>
+                    <ng-template tabHeading>
+                      <i class="icon-calculator"></i> Definición
+                    </ng-template>
+                    <div>
+                      <div class="row" app-base-input label="Base de datos" type="dropdown" [options]="databases" placeholder="Base de datos" [group]="detailForm"
+                        (valueChange)="onDataBaseChange($event)" id="sqlDataBaseId"></div>
+                      <div class="row" app-base-input label="Tabla" type="dropdown" [options]="tables" placeholder="Tabla" [group]="detailForm"
+                        (valueChange)="onDataTableChange($event)" id="sqlTableId"></div>
+                      <p-pickList [showTargetControls]="false" [showSourceControls]="false" [responsive]="true" sourceHeader="Columnas Disponibles"
+                        [sourceStyle]="{'height':'140px'}" [targetStyle]="{'height':'140px'}" targetHeader="Columnas Seleccionadas"
+                        dragdrop="true" [source]="list1" [target]="list2">
+                        <ng-template let-item pTemplate="item">
+                          <div class="ui-helper-clearfix">
+                            {{item.name}}
+                          </div>
+                        </ng-template>
+                      </p-pickList>
+                    </div>
+                  </tab>
+                  <tab>
+                    <ng-template tabHeading>
+                      <i class="icon-calculator"></i> Filtros</ng-template>
+                    <form novalidate>
+                      <query-builder [ngModelOptions]="{standalone: true}" [(ngModel)]="query" [config]="config"></query-builder>
+                    </form>
+                  </tab>
+                </tabset>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

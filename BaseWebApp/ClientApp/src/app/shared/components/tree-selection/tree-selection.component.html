@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5">
+      <h6>Disponibles</h6>
+      <p-tree [value]="nodes" selectionMode="single" [(selection)]="selectedNode"></p-tree>
+    </div>
+    <div class="col-md-2">
+      <button (click)=onAdd() class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+        <span class="ui-button-icon-left ui-clickable fa fa-fw fa-angle-right"></span>
+        <span class="ui-button-text ui-clickable">ui-btn</span>
+      </button>
+      <br/>
+      <br/>
+      <button (click)=onRemove() class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+        <span class="ui-button-icon-left ui-clickable fa fa-fw fa-angle-left"></span>
+        <span class="ui-button-text ui-clickable">ui-btn</span>
+      </button>
+    </div>
+    <div class="col-md-5">
+      <h6>Seleccionados</h6>
+      <p-tree [value]="selectedNodes" selectionMode="single" [(selection)]="selectedNode"></p-tree>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Tarea Programada</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Tarea" (valueChange)="onChangeType($event)"  type="dropdown" [options]="taskTypes" placeholder="Tarea" [group]="detailForm"
+              id="taskTypeId"></div>
+            <div class="row" app-base-input label="Proceso" [hidden]="typeSelected !== this.processingTaskId" type="dropdown" [options]="processTypes" placeholder="Proceso" [group]="detailForm"
+              id="processId"></div>
+            <div class="row" app-base-input label="Fecha" [hidden]="typeSelected !== this.processingTaskId && typeSelected !== this.deliveryTaskId" type="date" placeholder="Fecha" [group]="detailForm"
+              id="processDate"></div>
+              <div class="row" app-base-input label="Fuente SQL" [hidden]="typeSelected !== this.deliveryTaskId && typeSelected !== this.uploadTaskId" type="dropdown" [options]="sqlDataSources" placeholder="Fuente SQL" [group]="detailForm"
+              id="sqlDataSourceId"></div>
+            <div class="row" app-base-input label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></div>
+            <div class="row" app-base-input label="Tipo Ejecución" type="dropdown" [options]="executionTypes" placeholder="Tipo Ejecución"
+              [group]="detailForm" id="executionTypeId"></div>
+              <div class="row" app-base-input label="Dependencia" type="dropdown" [options]="dependencyTaks" placeholder="Dependencia"
+              [group]="detailForm" id="dependencyTaskId"></div>
+            <div class="row">
+              <div app-base-input class="col-sm-6" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="detailForm"
+                id="startDate"></div>
+              <div app-base-input class="col-sm-6" type="time" colCss="" label="Hora" placeholder="Hora" [group]="detailForm" id="startTime"></div>
+            </div>
+            <app-week-days formControlName="days" FormGroup="detailForm" label="Ejecutar los días"></app-week-days>
+            <div class="row" colCss="col-sm-3" app-base-input label="Tarea Activa" type="switch" [group]="detailForm" id="activeStatus"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+            <app-button-delete *ngIf="editingStatus" (confirm)=onDelete()></app-button-delete>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

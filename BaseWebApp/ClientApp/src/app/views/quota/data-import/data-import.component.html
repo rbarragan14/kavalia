@@ -1,0 +1,24 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Importar Cuotas</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit()" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Archivo" type="file" placeholder="Archivo" [group]="detailForm" id="file"></div>
+            <div class="row" app-base-input label="Formato" type="dropdown" [options]="fileFormatList" placeholder="Formato" [group]="detailForm"
+              id="format"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Cargar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

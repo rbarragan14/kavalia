@@ -1,0 +1,54 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Variable</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row">
+              <div app-base-input class="col-sm-10" colCss="" label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></div>
+              <div app-base-input class="col-sm-2" colCss="" label="Versión" placeholder="Versión" [group]="detailForm" id="version"></div>
+            </div>
+            <div class="row" app-base-input label="Descripción" placeholder="Descripción" [group]="detailForm" id="description"></div>
+            <div class="row" app-base-input label="Tipo Fuente" type="dropdown" [options]="sourceTypeList" placeholder="Tipo Fuente"
+              [group]="detailForm" (valueChange)="onDataSourceTypeChange($event)" id="sourceTypeId"></div>
+            <div [hidden]="!sqlTypeSelected" class="row">
+              <div class="col-sm-6" colCss="" app-base-input label="Fuente de Datos" [options]="sqlDatasourcesList" type="dropdown" placeholder="Fuente de Datos"
+                [group]="detailForm" (valueChange)="onDataSourceChange($event)" id="sqlDataSourceId"></div>
+              <div class="col-sm-6" colCss="" app-base-input label="Campo" [options]="sqlFieldsList" type="dropdown" placeholder="Campo"
+                [group]="detailForm" id="sqlFieldId"></div>
+            </div>
+            <div [hidden]="sqlTypeSelected" class="row">
+              <div class="col-sm-6" colCss="" app-base-input label="Fuente de Datos" [options]="fileDatasourcesList" type="dropdown" placeholder="Fuente de Datos"
+                [group]="detailForm" (valueChange)="onFileDataSourceChange($event)" id="fileDataSourceId"></div>
+              <div class="col-sm-6" colCss="" app-base-input label="Campo" [options]="fileFieldsList" type="dropdown" placeholder="Campo"
+                [group]="detailForm" id="fileFieldId"></div>
+            </div>
+            <div class="row" app-base-input label="Operador" [options]="operatorsList" type="dropdown" placeholder="Operador" [group]="detailForm"
+              id="operatorId"></div>
+            <div class="row">
+              <div app-base-input class="col-sm-2" colCss="" (valueChange)="onChangeAgrupar($event)" label="Agrupar" type="switch" [group]="detailForm"
+                id="groupPositions"></div>
+              <div app-base-input class="col-sm-10" colCss="" [hidden]="!sqlTypeSelected || !showGroupField" [options]="sqlFieldsList"
+                type="dropdown" label="Campo Agrupación" placeholder="Campo Agrupación" [group]="detailForm" id="sqlFieldGroupId"></div>
+              <div app-base-input class="col-sm-10" colCss="" [hidden]="sqlTypeSelected || !showGroupField" [options]="fileFieldsList"
+                type="dropdown" label="Campo Agrupación" placeholder="Campo Agrupación" [group]="detailForm" id="fileFieldGroupId"></div>
+            </div>
+            <div class="row" hidden="true" app-base-input label="Sentencia SQL" type="textarea" placeholder="Sentencia SQL" [group]="detailForm" id="slqSentence"></div>
+            <div class="row" colCss="col-sm-2" app-base-input label="Activo" type="switch" [group]="detailForm" id="activeStatus"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

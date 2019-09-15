@@ -1,0 +1,25 @@
+<div *ngIf="catalog; else loading; let catalog">
+  <div class="animated fadeIn">
+    <div class="row justify-content-center">
+      <div class="col-xl-6 col-12">
+        <div class="card">
+          <div class="card-header">
+            <strong>{{catalog.name}}</strong>
+          </div>
+          <form novalidate (ngSubmit)="onSubmit(catalogDetailForm)" [formGroup]="catalogDetailForm">
+            <div class="card-body">
+              <app-base-input label="Id" rowCss="col-sm-8" type="textbox" placeholder="Elemento catálogo Id" [group]="catalogDetailForm" id="catalogItemId"></app-base-input>
+              <app-base-input label="Nombre" type="textbox" placeholder="Nombre" [group]="catalogDetailForm" id="name"></app-base-input>
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+              <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+              <app-button-delete *ngIf="editingStatus" (confirm)=onDelete()></app-button-delete>
+            </div>
+          </form>
+        </div>
+      </div><!--/.col-->
+    </div><!--/.row-->
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

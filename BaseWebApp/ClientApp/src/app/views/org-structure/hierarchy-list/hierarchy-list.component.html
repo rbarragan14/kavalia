@@ -1,0 +1,39 @@
+<div *ngIf="items; else loading; let items">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Jerarquía organizacional </div>
+          <div class="card-body">
+            <ngx-datatable
+              class="material"
+              [rows]="items"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Nombre" prop="name"></ngx-datatable-column>
+              <ngx-datatable-column name="Versión" prop="version"></ngx-datatable-column>
+              <ngx-datatable-column name="Nueva Versión" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onSelectVersion(row) class="btn btn-info btn-sm" type="button">Versión</button>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Ver" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onSelect(row) class="btn btn-info btn-sm" type="button">Ver</button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+          <div class="card-footer">
+            <button (click)=onCreate() type="button" class="btn btn-sm btn-success"><i class="fa fa-dot-circle-o"></i> Nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

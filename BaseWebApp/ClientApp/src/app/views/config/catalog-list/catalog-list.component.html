@@ -1,0 +1,32 @@
+<div *ngIf="catalogs; else loading; let catalogs">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Catálogos </div>
+          <div class="card-body">
+            <div class="alert-danger">{{errorMessage}}</div>
+            <ngx-datatable
+              class="material"
+              [rows]="catalogs"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Nombre Catálogo" prop="name"></ngx-datatable-column>
+              <ngx-datatable-column name="Id Catálogo" prop="catalogId"></ngx-datatable-column>
+              <ngx-datatable-column name="Ver" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onSelect(row) class="btn btn-sm btn-outline-primary" type="button"><i class="fa fa-edit"></i></button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

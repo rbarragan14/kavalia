@@ -1,0 +1,55 @@
+<div *ngIf="logs; else loading; let data">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Consulta Tendencia </div>
+          <div class="card-body">
+            <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+              <div class="row">
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="searchForm" id="startDate"></div>
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="searchForm" id="endDate"></div>
+                <div hidden="true" app-base-input class="col-sm-4" label="Posición" [multioptions]="positionElements" placeholder="Posición" type="multiselect" [group]="searchForm" id="positions"></div>
+                <div app-base-input class="col-sm-4" label="Esquema" colCss="" [options]="schemaList" placeholder="Esquema" type="dropdown" [group]="searchForm" id="schema"></div>
+              </div>
+              <div class="row">
+                <div app-base-input class="col-sm-4" colCss="" label="Variable" [options]="indicatorList" placeholder="Variable" type="dropdown" [group]="searchForm" id="indicator"></div>
+                <div app-base-input class="col-sm-4" colCss="" label="Identificación" placeholder="Identificación" [group]="searchForm" id="identification"></div>
+                <div class="col-sm-4">
+                  <label>&nbsp;</label>
+                  <div class="input-group">
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Buscar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <ngx-datatable
+              class="material"
+              [rows]="data"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Posición" prop="position"></ngx-datatable-column>
+              <ngx-datatable-column name="Tipo Identificación" prop="identificationType"></ngx-datatable-column>
+              <ngx-datatable-column name="Identificación" prop="indentification"></ngx-datatable-column>
+              <ngx-datatable-column name="Nombres" prop="fullName"></ngx-datatable-column>
+              <ngx-datatable-column name="Periodo" prop="period"></ngx-datatable-column>
+              <ngx-datatable-column name="Esquema" prop="indicator"></ngx-datatable-column>
+              <ngx-datatable-column name="Valor del pago" prop="valuePaid">
+                <ng-template let-value="value" ngx-datatable-cell-template> {{value | currency}} </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Variable" prop="paymentTable"></ngx-datatable-column>
+              <ngx-datatable-column name="Valor" prop="totalValue">
+                <ng-template let-value="value" ngx-datatable-cell-template> {{value | currency}} </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

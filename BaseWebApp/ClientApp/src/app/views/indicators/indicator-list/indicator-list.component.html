@@ -1,0 +1,48 @@
+<div *ngIf="items; else loading; let rowItems">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Indicadores </div>
+          <div class="card-body">
+            <ngx-datatable class="material" [rows]="rowItems" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Tipo Indicador" prop="indicatorType.name"></ngx-datatable-column>
+              <ngx-datatable-column name="Nombre" prop="name"></ngx-datatable-column>
+              <ngx-datatable-column name="Descripción" prop="description"></ngx-datatable-column>
+              <ngx-datatable-column name="Umbral Mínimo" prop="thresholdMin"></ngx-datatable-column>
+              <ngx-datatable-column name="Umbral Máximo" prop="thresholdMax"></ngx-datatable-column>
+              <ngx-datatable-column name="Copiar" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onCopy(row) class="btn btn-sm btn-outline-primary" type="button">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Formulación" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onFormulaSelect(row) class="btn btn-sm btn-outline-primary" type="button">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Ver" maxWidth="100">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button (click)=onSelect(row) class="btn btn-sm btn-outline-primary" type="button">
+                    <i class="fa fa-edit"></i>
+                  </button>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+          <div class="card-footer">
+            <button (click)=onCreate() type="button" class="btn btn-sm btn-success">
+              <i class="fa fa-dot-circle-o"></i> Nuevo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

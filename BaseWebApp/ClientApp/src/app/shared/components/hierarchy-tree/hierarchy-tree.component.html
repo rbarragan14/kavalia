@@ -1,0 +1,50 @@
+<div *ngIf="showToolbar" class="row col-sm-12">
+  <p-toolbar>
+    <div class="ui-toolbar-group-left">
+      <button pButton type="button" class="ui-button-raised ui-button-secondary" icon="pi pi-angle-double-up" (click)="onClickModal(false, true)"></button>
+      <button pButton type="button" class="ui-button-raised" icon="pi pi-plus" (click)="onClickModal(false, false)"></button>
+      <button pButton type="button" class="ui-button-raised ui-button-success" icon="pi pi-pencil" (click)="onClickModal(true, false)"></button>
+      <app-button-delete-ng label='' class="ui-button-raised ui-button-danger" icon="pi pi-trash" (confirm)="deleteSelectedNode()"></app-button-delete-ng>
+      <button *ngIf="showExtendedButton" pButton type="button" class="ui-button-raised ui-button-warning" icon="pi pi-user" (click)="onExtendedButtonClick($event)"></button>
+    </div>
+  </p-toolbar>
+</div>
+<div class="card card-body">
+  <p-tree [style]="{'width':'20em'}" [value]="nodes" [selectionMode]="selectionMode" [draggableNodes]="showToolbar && allowDragAndDrop" [droppableNodes]="showToolbar && allowDragAndDrop"
+    dragdropScope="hierarchytree" [selection]="selectedNode" (selectionChange)="onSelectionChange($event)"></p-tree>
+</div>
+<div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Nodo</h4>
+        <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitNode(nodeForm)" [formGroup]="nodeForm">
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="card">
+              <div class="card-body">
+                <div app-base-input *ngIf="!singleInput" label="Valor" type="prepend" icon="fa fa-keyboard-o" placeholder="Valor" [group]="nodeForm"
+                  id="value"></div>
+                <div app-base-input label="Nombre" type="prepend" icon="fa fa-file-o" placeholder="Nombre" [group]="nodeForm" id="name"></div>
+                <div app-base-input label="Revisor" type="switch" [group]="nodeForm" id="revisor"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModal.hide()">
+            <i class="fa fa-close"></i> Cerrar</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

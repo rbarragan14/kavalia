@@ -1,0 +1,52 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Indicador</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Nombre" placeholder="Nombre" [group]="detailForm" id="name"></div>
+            <div class="row" app-base-input label="Descripción" placeholder="Descripción" [group]="detailForm" id="description"></div>
+            <div class="row">
+              <div app-base-input class="col-sm-6" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="detailForm"
+                id="startDate"></div>
+              <div app-base-input class="col-sm-6" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="detailForm"
+                id="finalDate"></div>
+            </div>
+            <div class="row">
+              <div app-base-input class="col-sm-6" colCss="" label="Tipo Indicador" [options]="indicatorTypeList" type="dropdown" placeholder="Tipo Indicador"
+                [group]="detailForm" id="indicatorTypeId"></div>
+              <div app-base-input class="col-sm-6" colCss="" label="Periodicidad" [options]="periodicityList" type="dropdown" placeholder="Periodicidad"
+                [group]="detailForm" id="periodicityId"></div>
+            </div>
+            <div class="row">
+              <div app-base-input class="col-sm-6" colCss="" label="Solicitud de datos" [options]="ussageList" type="dropdown" placeholder="Solicitud de datos"
+                [group]="detailForm" id="dataInputId"></div>
+              <div app-base-input class="col-sm-6" colCss="" label="Uso" [options]="ussageAppList" type="dropdown" placeholder="Uso" [group]="detailForm"
+                id="ussageId"></div>
+            </div>
+            <div class="row">
+              <div app-base-input class="col-sm-4" type="number" colCss="" label="Umbral Mínimo" placeholder="Umbral Mínimo" [group]="detailForm"
+                id="thresholdMin"></div>
+              <div app-base-input class="col-sm-4" type="number" colCss="" label="Umbral Medio" placeholder="Umbral Medio" [group]="detailForm"
+                id="thresholdMid"></div>
+              <div app-base-input class="col-sm-4" type="number" colCss="" label="Umbral Máximo" placeholder="Umbral Máximo" [group]="detailForm"
+                id="thresholdMax"></div>
+            </div>
+            <div class="row" app-base-input label="Observación" placeholder="Observación" [group]="detailForm" id="comments"></div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

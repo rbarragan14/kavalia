@@ -1,0 +1,31 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Usuario</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Email" placeholder="Email" [group]="detailForm" id="email"></div>
+            <div class="row" app-base-input label="Nombres" placeholder="Nombres" [group]="detailForm" id="firstName"></div>
+            <div class="row" app-base-input label="Apellidos" placeholder="Apellidos" [group]="detailForm" id="lastName"></div>
+            <div class="row" app-base-input label="Tipo Identificación" [options]="identificationTypes" type="dropdown" placeholder="Tipo Identificación" [group]="detailForm" id="identificationTypeId"></div>
+            <div class="row" app-base-input label="Número Identificación" placeholder="Número Identificación" [group]="detailForm" id="identification"></div>
+            <div class="row" app-base-input label="Rol" type="dropdown" [options]="roles" placeholder="Rol" [group]="detailForm" id="applicationRoleId"></div>
+            <div *ngIf="!editingStatus" formGroupName="account">
+              <div class="row" app-base-input label="Contraseña" formValidate="true" type="password" placeholder="Contraseña" [group]="accountForm" id="password"></div>
+              <div class="row" app-base-input label="Confirmación Contraseña" type="password" placeholder="Confirmación Contraseña" [group]="accountForm" id="passwordConfirm"></div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+            <button *ngIf="editingStatus" type="button" (click)=onDataAccess() class="btn btn-sm btn-success"><i class="fa fa-lock"></i> Acceso Datos</button>
+            <button *ngIf="editingStatus" type="button" (click)=onSetPassword() class="btn btn-sm btn-secondary"><i class="fa fa-key"></i> Contraseña</button>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>

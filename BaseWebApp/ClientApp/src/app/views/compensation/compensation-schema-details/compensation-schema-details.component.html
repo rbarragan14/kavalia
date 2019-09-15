@@ -1,0 +1,83 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Esquema de Compensación</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Nombre Esquema" placeholder="Nombre Esquema" [group]="detailForm" id="name"></div>
+            <div class="row" app-base-input label="Fecha Inicio" placeholder="Fecha Inicio" type="date" [group]="detailForm" id="startDate"></div>
+            <div class="row" app-base-input label="Fecha Fin" placeholder="Fecha Fin" type="date" [group]="detailForm" id="finalDate"></div>
+            <div class="row" app-base-input label="Periodicidad de Cálculo" [options]="periodicityList" type="dropdown" placeholder="Periodicidad de Cálculo" [group]="detailForm" id="periodicityId"></div>
+            <div class="row" app-base-input label="Posiciones Compensación" [multioptions]="positionsList" placeholder="Posiciones Compensación" type="multiselect" [group]="detailForm" id="positions"></div>
+            <div class="row col-sm-12">
+              <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                  <div class="btn-group btn-group-sm mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary" (click)="onClickModalVariable()">
+                      <i class="fa fa-plus"> Elemento de pago variable</i>
+                    </button>
+                  </div>
+              </div>
+            </div>
+            <ngx-datatable
+            style="width: 100%"
+            class="material"
+            [rows]="variableIndicatorRows"
+            [columnMode]="'force'"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            [rowHeight]="'auto'"
+            [limit]="5"
+            [rowHeight]="'auto'">
+            <ngx-datatable-column name="Elementos de pago variable" prop="name"></ngx-datatable-column>
+            <ngx-datatable-column name="Ver" maxWidth="80">
+              <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                <button (click)="onSelectVariable(row, rowIndex)" class="btn btn-info btn-sm" type="button">Ver</button>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning"><i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->
+</div>
+<div bsModal #infoModalPaymentVariable="bs-modal" [config]="{backdrop: 'static'}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-info" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Elemento de pago variable</h4>
+        <button type="button" class="close" (click)="infoModalPaymentVariable.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form novalidate (ngSubmit)="onSubmitPaymentVariable(paymentVariableForm)" [formGroup]="paymentVariableForm">
+        <div class="modal-body">
+          <div class="card">
+            <div class="card-body">
+              <div class="row" app-base-input label="Elemento de pago variable" [options]="paymentElementVariable" type="dropdown" placeholder="Elemento de pago variable" [group]="paymentVariableForm" id="variable"></div>
+              <div class="row" app-base-input label="Valor de Referencia" type="decimal" placeholder="Valor de Referencia" [group]="paymentVariableForm" id="valueReference"></div>
+              <div class="row" app-base-input label="Tabla a Aplicar" [multioptions]="paymentTables" placeholder="Tabla a Aplicar" type="multiselect" [group]="paymentVariableForm" id="paymentTables"></div>
+              <div class="row" app-base-input label="Operador" [options]="operatorList" type="dropdown" placeholder="Operador" [group]="paymentVariableForm" id="operator"></div>
+              <div class="row" app-base-input label="Adicional" type="switch" [group]="paymentVariableForm" id="aditional"></div>
+              <div class="row" app-base-input label="Factor de Ajuste" type="decimal" placeholder="Factor de Ajuste" [group]="paymentVariableForm" id="adjustmentFactor"></div>
+              <div class="row" app-base-input label="Indicador" [options]="indicatorList" type="dropdown" placeholder="Indicador" [group]="paymentVariableForm" id="indicator"></div>
+              <div class="row" app-base-input label="Valor Fijo" type="decimal" placeholder="Valor Fijo" [group]="paymentVariableForm" id="fixedValue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-sm btn-info"><i class="fa fa-save"></i> Salvar</button>
+          <button type="button" class="btn btn-sm btn-warning" (click)="infoModalPaymentVariable.hide()"><i class="fa fa-close"></i> Cerrar</button>
+          <app-button-delete *ngIf="variableSelected !== null" (confirm)=onDeleteVariable()></app-button-delete>
+        </div>
+    </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

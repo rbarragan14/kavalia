@@ -1,0 +1,34 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-xl-6 col-12">
+      <div class="card">
+        <div class="card-header">
+          <strong>Acceso a datos</strong>
+        </div>
+        <form novalidate (ngSubmit)="onSubmit(detailForm)" [formGroup]="detailForm">
+          <div class="card-body">
+            <div class="row" app-base-input label="Usuario" placeholder="Nombre" [group]="detailForm" id="name"></div>
+            <div class="row" app-base-input label="Jerarquia" (valueChange)="onChangeHierarchy($event)" type="dropdown" [options]="hierarchyList" placeholder="Jerarquia"
+              [group]="detailForm" id="hierarchy"></div>
+            <div class="card">
+              <div class="card-header">
+                <i class="fa fa-edit"></i>Jerarquia
+              </div>
+              <div class="row col-sm-12">
+                <app-hierarchy-tree selectionMode="checkbox" [showToolbar]="false" [nodes]="activeNodes"></app-hierarchy-tree>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-sm btn-primary">
+              <i class="fa fa-save"></i> Salvar</button>
+            <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+              <i class="fa fa-sign-out"></i> Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

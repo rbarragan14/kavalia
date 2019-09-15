@@ -1,0 +1,43 @@
+<div *ngIf="logs; else loading; let users">
+  <div class="animated fadeIn">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i> Resultado Procesamiento </div>
+          <div class="card-body">
+            <form novalidate (ngSubmit)="onSubmit(searchForm)" [formGroup]="searchForm">
+              <div class="row">
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Inicial" placeholder="Fecha Inicial" [group]="searchForm" id="startDate"></div>
+                <div app-base-input class="col-sm-4" type="date" colCss="" label="Fecha Final" placeholder="Fecha Final" [group]="searchForm" id="endDate"></div>
+                  <div class="col-sm-4">
+                      <label>&nbsp;</label>
+                    <div class="input-group">
+                      <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i> Buscar</button>
+                    </div>
+                  </div>
+                </div>
+            </form>
+            <ngx-datatable
+              class="material"
+              [rows]="logs"
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10">
+              <ngx-datatable-column name="Fecha" prop="eventDate">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                      {{value | date:'yyyy-MM-dd HH:mm:ss a'}}
+                  </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Descripción" prop="description"></ngx-datatable-column>
+              <ngx-datatable-column name="Tipo Evento" prop="eventType"></ngx-datatable-column>
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #loading>Loading Data...</ng-template>

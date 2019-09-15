@@ -1,0 +1,39 @@
+<div class="animated fadeIn">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <strong>Selección del indicador y Jerarquías</strong>
+        </div>
+        <div class="card-body">
+          <div>
+            <tabset>
+              <tab>
+                <ng-template tabHeading>
+                  <i class="icon-calculator"></i> Indicador
+                </ng-template>
+                <p-tree [value]="indicators" selectionMode="single" [(selection)]="selectedNode"></p-tree>
+              </tab>
+              <tab>
+                <ng-template tabHeading>
+                  <i class="icon-calculator"></i> Jerarquías
+                </ng-template>
+                <div class="row" app-base-input label="Nombre" [multioptions]="hierarchyList" type="multiselect" placeholder="Nombre" [group]="detailForm"
+                  id="hierarchy"></div>
+                <app-hierarchy-tree [showToolbar]="false" [nodes]="hierarchy"></app-hierarchy-tree>
+              </tab>
+            </tabset>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="button" (click)=onSubmit() class="btn btn-sm btn-primary">
+            <i class="fa fa-save"></i> Salvar</button>
+          <button type="button" (click)=onReturn() class="btn btn-sm btn-warning">
+            <i class="fa fa-sign-out"></i> Cancelar</button>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+</div>

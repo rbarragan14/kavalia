@@ -1,0 +1,40 @@
+// If you want to override variables do it here
+@import "variables";
+
+// Import styles
+@import "node_modules/@coreui/coreui/scss/coreui";
+
+// If you want to add something do it here
+@import "custom";
+
+.app-notification {
+    top: 50px
+}
+
+.has-error {
+    border-color: #dc3545;
+}
+
+.has-feedback {
+    border-color: #28a745;
+}
+
+.matrix-header {
+    background: #72809b;
+    color: white !important;
+}
+
+.simple-notification .sn-content {
+    margin: 0;
+    font-size: 16px;
+    padding: 0 45px 0 0;
+    line-height: 20px;
+}
+
+.card-footer > :not(:last-child) {
+    margin-right: .10rem;
+}
+
+.card-footer > :not(:first-child) {
+    margin-left: .10rem;
+}
